@@ -18,7 +18,10 @@ const FeaturedPost = () => {
         </h2>
         <div className="flex flex-wrap mt-[4rem] gap-6">
           {featuredPost.map((item) => (
-            <div className="w-[320px] shadow-md items-start flex flex-col    ">
+            <div
+              key={item.id}
+              className="w-[320px] shadow-md items-start flex flex-col    "
+            >
               <div className="w-full h-[300px]">
                 <Image
                   src={item.imageUrl}

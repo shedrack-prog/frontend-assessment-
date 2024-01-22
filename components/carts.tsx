@@ -15,6 +15,9 @@ const CartPopUp = () => {
   const [quantity, setQuantity] = useState();
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleQuantity = (id: string, type: string) => {
     carts.map((p: any) => {
@@ -28,9 +31,7 @@ const CartPopUp = () => {
       }
     });
   };
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+
   if (!mounted) {
     return null;
   }
@@ -42,7 +43,7 @@ const CartPopUp = () => {
           carts.map((item: any) => {
             setQuantity(item.quantity);
             return (
-              <div className=" ">
+              <div key={item.id} className=" ">
                 <h1 className="text-2xl font-[700] leading-[24px] mt-[1rem] mb-[1rem]">
                   Cart Items
                 </h1>

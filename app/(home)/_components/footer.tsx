@@ -36,14 +36,15 @@ const Footer = () => {
       </div>
 
       <div className="flex items-center justify-between px-[8rem] mt-[5rem]">
-        {footerLinks.map((item) => (
-          <div>
+        {footerLinks.map((item, index) => (
+          <div key={index}>
             <h1 className="text-[16px] leading-[24px] font-[700] text-[#252B42]">
               {item.headerText}
             </h1>
             <div className="flex flex-col items-start">
-              {item.links?.map((lnk) => (
+              {item.links?.map((lnk, index) => (
                 <Link
+                  key={index}
                   href={'#'}
                   className="text-[14px] font-[700] leading-[24px] text-[#737373]"
                 >
