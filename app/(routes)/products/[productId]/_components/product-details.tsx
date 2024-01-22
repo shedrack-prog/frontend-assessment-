@@ -19,11 +19,14 @@ import {
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 
-const cartItems: any = localStorage.getItem('cart');
-const cart: any = JSON.parse(cartItems) || [];
-
-const wishlistsItems: any = localStorage.getItem('wishlist');
-const wishlists: any = JSON.parse(wishlistsItems) || [];
+let cart: any;
+let wishlists: any;
+if (typeof window !== 'undefined') {
+  const cartItems: any = localStorage.getItem('cart');
+  cart = JSON.parse(cartItems) || [];
+  const wishlistsItems: any = localStorage.getItem('wishlist');
+  wishlists = JSON.parse(wishlistsItems) || [];
+}
 
 interface ProductDetailProps {
   product: {
@@ -56,7 +59,7 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const router = useRouter();
   // const alreadyInCart = false;
 
-  console.log(cart);
+  // console.log(cart);
   const handleAddToCart = (product: any, quantity: number): void => {
     dispatch(
       addToCart({

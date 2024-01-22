@@ -11,11 +11,14 @@ import wishlistIcon from '@/public/wishlistIcon.svg';
 import { useState } from 'react';
 import CartPopUp from '@/components/carts';
 
-const cartItems: any = localStorage.getItem('cart');
-const carts: any = JSON.parse(cartItems) || [];
-
-const wishlistItems: any = localStorage.getItem('wishlist');
-const wishlists: any = JSON.parse(wishlistItems) || [];
+let carts: any;
+let wishlists: any;
+if (typeof window !== 'undefined') {
+  const cartItems: any = localStorage.getItem('cart');
+  carts = JSON.parse(cartItems) || [];
+  const wishlistItems: any = localStorage.getItem('wishlist');
+  wishlists = JSON.parse(wishlistItems) || [];
+}
 
 const HomeHeader = () => {
   const [cartOpen, setCartOpen] = useState(false);

@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-const wishlistItem: any = localStorage.getItem('wishlist');
-const wishlist: any = JSON.parse(wishlistItem) || [];
+let wishlist: any;
+if (typeof window !== 'undefined') {
+  const wishlistItem: any = localStorage.getItem('wishlist');
+  wishlist = JSON.parse(wishlistItem) || [];
+}
 
 const initialState = [
   {

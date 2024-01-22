@@ -2,9 +2,6 @@
 
 import Image from 'next/image';
 
-const cartItems: any = localStorage.getItem('cart');
-const carts: any = JSON.parse(cartItems) || [];
-
 import minusIcon from '@/public/minus-icon.svg';
 import plusIcon from '@/public/plus-icon.svg';
 import { useEffect, useState } from 'react';
@@ -15,6 +12,13 @@ const CartPopUp = () => {
   const [quantity, setQuantity] = useState();
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
+
+  let carts: any;
+  if (typeof window !== 'undefined') {
+    const cartItems: any = localStorage.getItem('cart');
+    carts = JSON.parse(cartItems) || [];
+  }
+
   useEffect(() => {
     setMounted(true);
   }, []);

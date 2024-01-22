@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-const cartItems: any = localStorage.getItem('cart');
-const cart: any = JSON.parse(cartItems) || [];
+let cart: any;
+if (typeof window !== 'undefined') {
+  const cartItems: any = localStorage.getItem('cart');
+  cart = JSON.parse(cartItems) || [];
+}
 
 const initialState = [
   {
