@@ -5,6 +5,7 @@ if (typeof window !== 'undefined') {
   cart = JSON.parse(cartItems) || [];
 }
 
+// const initialState = [...cart];
 const initialState = [
   {
     id: cart?.id || null,
@@ -15,7 +16,7 @@ const initialState = [
   },
 ];
 
-const cartSlice = createSlice({
+const CartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
@@ -23,23 +24,16 @@ const cartSlice = createSlice({
       const { id, title, thumbnail, quantity, price } = action.payload;
       state.push(action.payload);
       // let newItems = [];
-      cart.push({ id, title, thumbnail, quantity, price });
-      localStorage.setItem('cart', JSON.stringify(cart));
     },
     deleteFromCart: (state, action: PayloadAction<any>) => {
       const cartId = action.payload;
       return state.filter((cart: any) => cart.id === cartId);
     },
     updateCart: (state, action: PayloadAction<any>) => {
-      const { id, qty } = action.payload;
-      state.forEach((cart: any) => {
-        if (cart.id === id) {
-          cart.quantity = qty;
-        }
-      });
+      state.push(action.payload);
     },
   },
 });
 
-export const { addToCart, updateCart, deleteFromCart } = cartSlice.actions;
-export default cartSlice.reducer;
+export const { addToCart, updateCart, deleteFromCart } = CartSlice.actions;
+export default CartSlice.reducer;

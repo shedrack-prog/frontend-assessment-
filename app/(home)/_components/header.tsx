@@ -8,23 +8,54 @@ import profileIcon from '@/public/profileIcon.svg';
 import searchIcon from '@/public/searchIcon.svg';
 import cartIcon from '@/public/cartIcon.svg';
 import wishlistIcon from '@/public/wishlistIcon.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CartPopUp from '@/components/carts';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '@/redux/slices/cartSlice';
+import toast from 'react-hot-toast';
+import WishlistPopup from '@/components/wishlistItem';
 
-let carts: any;
-let wishlists: any;
-if (typeof window !== 'undefined') {
-  const cartItems: any = localStorage.getItem('cart');
-  carts = JSON.parse(cartItems) || [];
-  const wishlistItems: any = localStorage.getItem('wishlist');
-  wishlists = JSON.parse(wishlistItems) || [];
-}
+// let carts: any;
+// let wishlists: any;
+// if (typeof window !== 'undefined') {
+//   const cartItems: any = localStorage.getItem('cart');
+//   carts = JSON.parse(cartItems) || [];
+//   const wishlistItems: any = localStorage.getItem('wishlist');
+//   wishlists = JSON.parse(wishlistItems) || [];
+// }
 
 const HomeHeader = () => {
+  const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
+
+  let cart: any;
+  let wishlists: any = [];
+
+  if (typeof window !== 'undefined') {
+    const cartItems: any = localStorage.getItem('cart');
+    const wishlistItems: any = localStorage.getItem('wishlist');
+    cart = JSON.parse(cartItems) || [];
+    wishlists = JSON.parse(wishlistItems);
+  }
+
+  let carts: any = [];
+
+  // carts = useSelector((state: any) => state.cart);
+  // wishlists = useSelector((state: any) => state.wishlist);
+  // console.log(carts, wishlists);
+
   const [cartOpen, setCartOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  if (!mounted) {
+    return null;
+  }
   return (
     <div className="p-5 md:flex items-center px-[5rem] w-full hidden">
-      {cartOpen && <CartPopUp />}
+      {cartOpen && <CartPopUp setCatOpen={setCartOpen} />}
+      {wishlistOpen && <WishlistPopup setWishlistOpen={setWishlistOpen} />}
       <div className="flex justify-between w-full">
         <div className="flex justify-between items-center gap-x-8">
           <div>
@@ -80,9 +111,12 @@ const HomeHeader = () => {
               onClick={() => setCartOpen(true)}
             >
               <Image src={cartIcon} alt="Cart Icon" width={20} height={14} />
-              <p className="text-[12px] text-[#23A6F0]">{carts?.length}</p>
+              <p className="text-[12px] text-[#23A6F0]">{cart?.length}</p>
             </span>
-            <span className="flex gap-x-[1.5px] cursor-pointer ">
+            <span
+              className="flex gap-x-[1.5px] cursor-pointer "
+              onClick={() => setWishlistOpen(true)}
+            >
               <Image
                 src={wishlistIcon}
                 alt="wishlist Icon"

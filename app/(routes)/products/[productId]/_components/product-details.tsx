@@ -9,7 +9,7 @@ import cartIcon from '@/public/whiteCartIcon.svg';
 import wishlistIcon from '@/public/wishlistIcon.svg';
 import fullWishlistIcon from '@/public/fullwishlist.svg';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '@/redux/slices/cartSlice';
 import {
@@ -27,6 +27,9 @@ if (typeof window !== 'undefined') {
   const wishlistsItems: any = localStorage.getItem('wishlist');
   wishlists = JSON.parse(wishlistsItems) || [];
 }
+
+// const cart = useSelector((state: any) => state.cart);
+// const wishlists = useSelector((state: any) => state.wishlist);
 
 interface ProductDetailProps {
   product: {
@@ -48,6 +51,12 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [addedToCart, setAddToCart] = useState<boolean>(false);
   const [addWishlist, setAddWishlist] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // const quantity = 1;
   const dispatch = useDispatch();
   // const cart = useSelector((state: any) => state.cart);
@@ -70,8 +79,15 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
         price: product.price,
       })
     );
+    cart.push({
+      id: product.id,
+      title: product.title,
+      thumbnail: product.thumbnail,
+      quantity,
+      price: product.price,
+    });
+    localStorage.setItem('cart', JSON.stringify(cart));
     toast.success('Product added to cart');
-    router.refresh();
   };
   const handleAddToWishlist = (product: any): void => {
     dispatch(
@@ -88,6 +104,9 @@ const ProductDetail = ({ product }: ProductDetailProps) => {
     dispatch(deleteFromWishlist(product.id));
     toast.success('Product removed to wishlists');
   };
+  if (!isMounted) {
+    return null;
+  }
   return (
     <div className="mt-[1rem] px-[8rem]">
       <div className="flex flex-col ">
